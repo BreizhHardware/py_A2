@@ -1,11 +1,11 @@
-def celsius_fahrenheit(celcius):
-    return celcius * 9 / 5 + 32
+def celsius_fahrenheit(celsius):
+    return celsius * 9 / 5 + 32
 
 
 def mention(note):
     if note < 0:
         return "Note hors échelle"
-    if note < 10:
+    elif note < 10:
         return "Insuffisant"
     elif note < 12:
         return "Passable"
@@ -49,13 +49,13 @@ def occurrences_lettres(mot):
     return {c: mot.count(c) for c in mot}
 
 
-points_lettres = {
-    1 : ["E", "A", "I", "N", "O", "R", "S", "T", "U", "L"],
-    2 : ["D", "M", "G"],
-    3 : ["B", "C", "P"],
-    4 : ["F", "H", "V"],
-    8 : ["J", "Q"],
-    10 : ["K", "W", "X", "Y", "Z"]
+points_lettres_scrabble = {
+    1: ["E", "A", "I", "N", "O", "R", "S", "T", "U", "L"],
+    2: ["D", "M", "G"],
+    3: ["B", "C", "P"],
+    4: ["F", "H", "V"],
+    8: ["J", "Q"],
+    10: ["K", "W", "X", "Y", "Z"]
 }
 
 
