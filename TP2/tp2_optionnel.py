@@ -28,11 +28,12 @@ def rotation90(image, sens_trigo):
     for x in range(largeur):
         for y in range(hauteur):
             r, g, b = image.getpixel((x, y))
-            if sens_trigo :
+            if sens_trigo:
                 img.putpixel((hauteur - y - 1, x), (r, g, b))
-            else :
+            else:
                 img.putpixel((y, largeur - x - 1), (r, g, b))
     return img
+
 
 def contours(image, s):
     largeur, hauteur = image.size
@@ -52,4 +53,3 @@ def contours(image, s):
                 else:
                     img.putpixel((x, y), (255, 255, 255))
     return img
-
