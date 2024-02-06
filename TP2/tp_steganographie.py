@@ -8,6 +8,8 @@ hiddenImage1 = Image.open("hiddenImage1.png")
 hiddenImage2 = Image.open("hiddenImage2.png")
 hiddenImage3 = Image.open("hiddenImage3.png")
 hiddenImage4 = Image.open("hiddenImage4.png")
+gladius = Image.open("Gladius.jpg")
+zeusMK2CL = Image.open("Zeus MKII CL.jpeg")
 
 
 def imageToArray(image):
@@ -53,41 +55,76 @@ def getHiddenTextOfLength(image, nbBitsForLength):
     return hiddenText
 
 
-def getLenghtTuple(imageArray, nbBitsForLength, index=0):
-    length = 0, nbBitsForLength - 1
-    i = nbBitsForLength - 1
-    while i >= 0:
-        length += imageArray[index] % 2 * (2 ** i)
-        i -= 1
-        index += 1
-    print(length)
-    return length
+def getListLastKBits(image, k):
+    list_pixel = list(image.getdata())
+    list_bit = []
+    for t in list_pixel:
+        for ind in range(3):
+            b_pixel = '{0:08b}'.format(t[ind])
+            list_bit.append(b_pixel[-k::])
+    return list_bit
 
 
-def imageToArrayTuple(image):
-    array = []
-    for pixel in image.getdata():
-        array.append((pixel[0], pixel[1], pixel[2]))
-    return array
+def parseDimensions(list_bit, nbBitsForSize, nbLastBits):
+    first_bits = list_bit[:nbBitsForSize // nbLastBits:]
+    second_bits = list_bit[nbBitsForSize // nbLastBits: 2 * (nbBitsForSize // nbLastBits):]
+    width = int("".join(first_bits), 2)
+    height = int("".join(second_bits), 2) - 1
+    return width, height
 
 
-def getHiddenImage(image, nbBitsForSize):
-    imageArray = imageToArrayTuple(image)
-    print(imageArray[0:10])
-    width = getLenghtTuple(imageArray, nbBitsForSize)
-    height = getLenghtTuple(imageArray, nbBitsForSize, nbBitsForSize * 2)
-    print(width)
-    print(height)
-    totalPixel = width * height * 3
-    hiddenImagePixel = [imageArray[i:i + 3] for i in range(nbBitsForSize * 2, nbBitsForSize * 2 + totalPixel, 3)]
-    hiddenImagePixel = [value for pixel in hiddenImagePixel for value in pixel]
-    hiddenImagePixel = [(hiddenImagePixel[i], hiddenImagePixel[i + 1], hiddenImagePixel[i + 2]) for i in
-                        range(0, len(hiddenImagePixel), 3)]
-    hiddenImage = Image.new("RGB", (width, height))
-    hiddenImage.putdata(hiddenImagePixel)
-    return hiddenImage
+def parseRGB(binarie):
+    r = int(binarie[:8:], 2)
+    g = int(binarie[8:16:], 2)
+    b = int(binarie[16:32:], 2)
+    return r, g, b
 
 
-def getHiddenImageInLastBits(image, nbBitsForSize, nbLastBits):
-    #To Do
-    return None
+def getHiddenImage(image, nbBitsForSize, nbLastBits):
+    list_bit = getListLastKBits(image, nbLastBits)
+    bin = ""
+
+    width, height = parseDimensions(list_bit, nbBitsForSize, nbLastBits)
+
+    secret_image = Image.new("RGB", (width, height), (0, 0, 0))
+    col = -1
+    row = -1
+
+    for k in range(2 * (nbBitsForSize // nbLastBits), len(list_bit)):
+        bin += list_bit[k]
+        if len(bin) == 24:
+            if col == width:
+                col = 0
+                row += 1
+            if row == height:
+                return secret_image
+
+            r, g, b = parseRGB(bin)
+            secret_image.putpixel((col, row), (r, g, b))
+            col += 1
+            bin = ""
+
+
+def setHiddenTextWithDelimiter(image, text, delimiter):
+    imageArray = imageToArray(image)
+    for i in range(len(text)):
+        char = ord(text[i])
+        for j in range(7):
+            imageArray[i * 7 + j] = (imageArray[i * 7 + j] & 0b11111110) | ((char >> (6 - j)) & 1)
+    for j in range(7):
+        imageArray[len(text) * 7 + j] = (imageArray[len(text) * 7 + j] & 0b11111110) | (ord(delimiter) >> (6 - j) & 1)
+    image.putdata([(imageArray[i], imageArray[i + 1], imageArray[i + 2]) for i in range(0, len(imageArray), 3)])
+    return image
+
+
+def setHiddenTextOfLength(image, text, nbBitsForLength):
+    imageArray = imageToArray(image)
+    length = len(text)
+    for i in range(nbBitsForLength):
+        imageArray[i] = (imageArray[i] & 0b11111110) | ((length >> (nbBitsForLength - 1 - i)) & 1)
+    for i in range(len(text)):
+        char = ord(text[i])
+        for j in range(7):
+            imageArray[i * 7 + nbBitsForLength] = (imageArray[i * 7 + nbBitsForLength] & 0b11111110) | ((char >> (6 - j)) & 1)
+    image.putdata([(imageArray[i], imageArray[i + 1], imageArray[i + 2]) for i in range(0, len(imageArray), 3)])
+    return image
