@@ -6,15 +6,15 @@ from sys import argv as args
 
 def __main__():
     if len(args) == 2:
-        if (args[1] == "tp2"):
+        if args[1] == "tp2":
             __tp2__()
-        elif (args[1] == "tp2_optionnel"):
+        elif args[1] == "tp2_optionnel":
             __tp2_optionnel__()
-        elif (args[1] == "tp_steganographie_text"):
+        elif args[1] == "tp_steganographie_text":
             __tp_steganographie_text__()
-        elif (args[1] == "tp_steganographie_image"):
+        elif args[1] == "tp_steganographie_image":
             __tp_steganographie_image__()
-        elif (args[1] == "tp_steganographie_hide"):
+        elif args[1] == "tp_steganographie_hide":
             __tp_steganographie_hide__()
         else:
             print("Usage: python3 main.py")
@@ -57,31 +57,34 @@ def __tp2_optionnel__():
 
 
 def __tp_steganographie_text__():
-    print(getHiddenTextWithDelimiter(hiddenText1, "\0"))
-    print(getHiddenTextWithDelimiter(hiddenText2, "\0"))
-    print(getHiddenTextOfLength(hiddenText3, 4))
-    print(getHiddenTextOfLength(hiddenText4, 16))
+    print(get_hidden_text_with_delimiter(hiddenText1, "\0"))
+    print(get_hidden_text_with_delimiter(hiddenText2, "\0"))
+    print(get_hidden_text_of_length(hiddenText3, 4))
+    print(get_hidden_text_of_length(hiddenText4, 16))
 
 
 def __tp_steganographie_image__():
-    hidden1 = getHiddenImage(hiddenImage1, 8, 1)
+    hidden1 = get_hidden_image(hiddenImage1, 8)
     hidden1.show()
-    hidden2 = getHiddenImage(hiddenImage2, 8, 1)
+    hidden2 = get_hidden_image(hiddenImage2, 8)
     hidden2.show()
-    hidden3 = getHiddenImage(hiddenImage3, 8, 2)
+    hidden3 = get_hidden_image(hiddenImage3, 8, 2)
     hidden3.show()
-    hidden4 = getHiddenImage(hiddenImage4, 16, 2)
+    hidden4 = get_hidden_image(hiddenImage4, 16, 2)
     hidden4.show()
 
+
 def __tp_steganographie_hide__():
-    gladiusWithHiddenTextDelimiter = setHiddenTextWithDelimiter(gladius, "Vive Star Citizen!", "\0")
-    gladiusWithHiddenTextDelimiter.show()
-    gladuisDecodedDelimiter = getHiddenTextWithDelimiter(gladiusWithHiddenTextDelimiter, "\0")
-    print(gladuisDecodedDelimiter)
-    zeusWithHiddenTextLength = setHiddenTextOfLength(zeusMK2CL, "I Held the line !", 4)
-    zeusWithHiddenTextLength.show()
-    zeusDecodedLength = getHiddenTextOfLength(zeusWithHiddenTextLength, 4)
-    print(zeusDecodedLength)
+    gladius_with_hidden_text_delimiter = set_hidden_text_with_delimiter(gladius, "Vive Star Citizen!", "\0")
+    gladius_decoded_delimiter = get_hidden_text_with_delimiter(gladius_with_hidden_text_delimiter, "\0")
+    print(gladius_decoded_delimiter)
+    zeus_with_hidden_text_length = set_hidden_text_of_length(zeusMK2CL, "I Held the line !", 4)
+    zeus_decoded_length = get_hidden_text_of_length(zeus_with_hidden_text_length, 4)
+    print(zeus_decoded_length)
+    gladius_with_hidden_image = set_hidden_image(gladius, zeusMK2CL, 8)
+    gladius_with_hidden_image.show()
+    gladius_decoded_image = get_hidden_image(gladius_with_hidden_image, 8)
+    gladius_decoded_image.show()
 
 
 if __name__ == "__main__":
