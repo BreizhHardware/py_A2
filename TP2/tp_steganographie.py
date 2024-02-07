@@ -1,16 +1,5 @@
 from PIL import Image
 
-hiddenText1 = Image.open("hiddenText1.png")
-hiddenText2 = Image.open("hiddenText2.png")
-hiddenText3 = Image.open("hiddenText3.png")
-hiddenText4 = Image.open("hiddenText4.png")
-hiddenImage1 = Image.open("hiddenImage1.png")
-hiddenImage2 = Image.open("hiddenImage2.png")
-hiddenImage3 = Image.open("hiddenImage3.png")
-hiddenImage4 = Image.open("hiddenImage4.png")
-gladius = Image.open("Gladius.jpg")
-zeusMK2CL = Image.open("Zeus MKII CL.jpeg")
-
 
 def image_to_array(image):
     array = []
@@ -110,9 +99,11 @@ def set_hidden_text_with_delimiter(image, text, delimiter):
     for i in range(len(text)):
         char = ord(text[i])
         for j in range(7):
-            image_array[i * 7 + j] = (image_array[i * 7 + j] & 0b11111110) | ((char >> (6 - j)) & 1)
+            image_array[i * 7 + j] = ((image_array[i * 7 + j] & 0b11111110) |
+                                      ((char >> (6 - j)) & 1))
     for j in range(7):
-        image_array[len(text) * 7 + j] = (image_array[len(text) * 7 + j] & 0b11111110) | (ord(delimiter) >> (6 - j) & 1)
+        image_array[len(text) * 7 + j] = ((image_array[len(text) * 7 + j] & 0b11111110) |
+                                          (ord(delimiter) >> (6 - j) & 1))
     image.putdata([(image_array[i], image_array[i + 1], image_array[i + 2]) for i in range(0, len(image_array), 3)])
     return image
 
@@ -123,26 +114,35 @@ def set_hidden_text_of_length(image, text, nb_bits_for_length):
     for i in range(nb_bits_for_length):
         image_array[i] = (image_array[i] & 0b11111110) | ((length >> (nb_bits_for_length - 1 - i)) & 1)
     for i in range(length * 7):
-        char = ord(text[i // 7])
-        image_array[i + nb_bits_for_length] = (image_array[i + nb_bits_for_length] & 0b11111110) | ((char >> (6 - (i % 7))) & 1)
+        char_index = ord(text[i // 7])
+        char_offset = i % 7
+        if char_index < len(text):
+            char = ord(text[char_index])
+            image_array[i + nb_bits_for_length] = ((image_array[i + nb_bits_for_length] & 0b11111110) |
+                                                   ((char >> (6 - char_offset)) & 1))
+        else:
+            image_array[i + nb_bits_for_length] = (image_array[i + nb_bits_for_length] & 0b11111110)
     image.putdata([(image_array[i], image_array[i + 1], image_array[i + 2]) for i in range(0, len(image_array), 3)])
     return image
 
 
 def set_hidden_image(image_original, image_to_hide, nb_bits_for_size, nb_last_bits = 1):
     list_bit = get_list_last_k_bits(image_original, nb_last_bits)
-    bin = ""
+    binary_data = ""
     width, height = image_to_hide.size
     for i in range(nb_bits_for_size // nb_last_bits):
-        bin += '{0:08b}'.format(width)[i * nb_last_bits:(i + 1) * nb_last_bits:]
-        bin += '{0:08b}'.format(height + 1)[i * nb_last_bits:(i + 1) * nb_last_bits:]
+        binary_data += '{0:08b}'.format(width, f'0{nb_last_bits}b')
+        binary_data += '{0:08b}'.format(height, f'0{nb_last_bits}b')
     for i in range(height):
         for j in range(width):
             r, g, b = image_to_hide.getpixel((j, i))
-            bin += '{0:08b}'.format(r)
-            bin += '{0:08b}'.format(g)
-            bin += '{0:08b}'.format(b)
-    for k in range(len(bin)):
-        list_bit[k] = list_bit[k][:-nb_last_bits:] + bin[k]
-    image_original.putdata([(int(list_bit[i], 2), int(list_bit[i + 1], 2), int(list_bit[i + 2], 2)) for i in range(0, len(list_bit), 3)])
+            binary_data += '{0:08b}'.format(r)
+            binary_data += '{0:08b}'.format(g)
+            binary_data += '{0:08b}'.format(b)
+    while len(binary_data) < len(list_bit):
+        binary_data += '0'
+    for k in range(len(list_bit)):
+        list_bit[k] = list_bit[k][:-nb_last_bits:] + binary_data[k]
+    image_original.putdata([(int(list_bit[i], 2), int(list_bit[i + 1], 2), int(list_bit[i + 2], 2))
+                            for i in range(0, len(list_bit), 3)])
     return image_original
