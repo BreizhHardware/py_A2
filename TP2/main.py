@@ -92,6 +92,9 @@ def __tp_steganographie_hide__():
     small = Image.open("small.png")
     zeusMK2CL_with_hidden_text = set_hidden_text_with_delimiter(small, "Flop, nigger !", "\0")
     zeusMK2CL_with_hidden_text.save("OuvreMoi.png")
+    images = Image.open("images.jpeg")
+    images = set_hidden_text_with_delimiter(images, "… Mi-mi-mi-mi-mi\n… I am the Great Mighty Poo\n   And I'm going to throw my shit at you!\nA huge supply of tish comes from my chocolate starfish\n    How about some scat, you little twat?\n    … Yeah, yeah, yeah, yeah\n    … Do you really think you'll survive in here?\n    You don't seem to know which creek you're in\n                                           Sweet corn is the only thing that makes it through my rear\n    How'd you think I keep this lovely grin?\n    Have some more caviar!\n    … Yeah, yeah, yeah, yeah\n    … Now I'm really getting rather mad\n    You're like a niggly tingly shitty little tag-nut\n    When I knock you out with all my bab\n    I'm going to take your head and ram it up my butt!\n    … Your what?\n    My butt!\n    Your butt?\n    I said, my butt! My butt!\n    My Butt!\n    … Ahh, ahh, ahh, ahh\n    … Ahh! I'm flushing! I'm flushing!\n    Fuck you little squirrel!", "\0")
+    images.save("Mimimi.jpeg")
     '''
     gladius_with_hidden_text_delimiter = set_hidden_text_with_delimiter(gladius, "Vive Star Citizen!", "\0")
     gladius_decoded_delimiter = get_hidden_text_with_delimiter(gladius_with_hidden_text_delimiter, "\0")
