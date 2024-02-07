@@ -61,8 +61,10 @@ def __tp_steganographie_text__():
     hiddenText2 = Image.open("hiddenText2.png")
     hiddenText3 = Image.open("hiddenText3.png")
     hiddenText4 = Image.open("hiddenText4.png")
+    decrypt_felix = Image.open("DecryptFelix.png")
     print(get_hidden_text_with_delimiter(hiddenText1, "\0"))
     print(get_hidden_text_with_delimiter(hiddenText2, "\0"))
+    print(get_hidden_text_with_delimiter(decrypt_felix, "\0"))
     print(get_hidden_text_of_length(hiddenText3, 4))
     print(get_hidden_text_of_length(hiddenText4, 16))
 
@@ -86,16 +88,22 @@ def __tp_steganographie_hide__():
     gladius = Image.open("Gladius.png")
     zeusMK2CL = Image.open("Zeus-MKII-CL.png")
     small = Image.open("small.png")
+    '''
     gladius_with_hidden_text_delimiter = set_hidden_text_with_delimiter(gladius, "Vive Star Citizen!", "\0")
     gladius_decoded_delimiter = get_hidden_text_with_delimiter(gladius_with_hidden_text_delimiter, "\0")
     print(gladius_decoded_delimiter)
     zeus_with_hidden_text_length = set_hidden_text_of_length(zeusMK2CL, "I Held the line !", 4)
     zeus_decoded_length = get_hidden_text_of_length(zeus_with_hidden_text_length, 4)
     print(zeus_decoded_length)
+    '''
     gladius_with_hidden_image = set_hidden_image(gladius, small, 8)
+    print(type(gladius_with_hidden_image))
     gladius_with_hidden_image.show()
+    '''
     gladius_decoded_image = get_hidden_image(gladius_with_hidden_image, 8)
+    print(type(gladius_decoded_image))
     gladius_decoded_image.show()
+    '''
 
 
 if __name__ == "__main__":

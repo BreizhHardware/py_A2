@@ -1,5 +1,8 @@
 from PIL import Image
 
+MAX_COLOR_VALUE = 255
+MAX_BIT_VALUE = 8
+
 
 def image_to_array(image):
     array = []
@@ -69,7 +72,7 @@ def parse_RGB(binary):
     return r, g, b
 
 
-def get_hidden_image(image, nb_bits_for_size, nb_last_bits = 1):
+def get_hidden_image(image, nb_bits_for_size, nb_last_bits=1):
     list_bit = get_list_last_k_bits(image, nb_last_bits)
     bin = ""
 
@@ -126,23 +129,77 @@ def set_hidden_text_of_length(image, text, nb_bits_for_length):
     return image
 
 
+'''
 def set_hidden_image(image_original, image_to_hide, nb_bits_for_size, nb_last_bits = 1):
     list_bit = get_list_last_k_bits(image_original, nb_last_bits)
     binary_data = ""
     width, height = image_to_hide.size
     for i in range(nb_bits_for_size // nb_last_bits):
-        binary_data += '{0:08b}'.format(width, f'0{nb_last_bits}b')
-        binary_data += '{0:08b}'.format(height, f'0{nb_last_bits}b')
-    for i in range(height):
-        for j in range(width):
-            r, g, b = image_to_hide.getpixel((j, i))
-            binary_data += '{0:08b}'.format(r)
-            binary_data += '{0:08b}'.format(g)
-            binary_data += '{0:08b}'.format(b)
+        binary_data += '{0:0{1}b}'.format(width, nb_bits_for_size)
+        binary_data += '{0:0{1}b}'.format(height, nb_bits_for_size)
+    for pixel in image_to_hide.getdata():
+        r, g ,b = pixel
+        binary_data += '{0:08b}'.format(b)
+        binary_data += '{0:08b}'.format(r)
+        binary_data += '{0:08b}'.format(g)
     while len(binary_data) < len(list_bit):
         binary_data += '0'
     for k in range(len(list_bit)):
-        list_bit[k] = list_bit[k][:-nb_last_bits:] + binary_data[k]
+        list_bit[k] = list_bit[k][:-nb_last_bits] + binary_data[k]
     image_original.putdata([(int(list_bit[i], 2), int(list_bit[i + 1], 2), int(list_bit[i + 2], 2))
                             for i in range(0, len(list_bit), 3)])
     return image_original
+'''
+
+
+# Try a method find on internet
+def make_image(data, resolution):
+    image = Image.new("RGB", resolution) # makes a new PIL.Image object.
+    image.putdata(data) # puts the "data" matrix (pixels) onto the image.
+    return image
+
+
+def remove_n_least_significant_bits(value, n):
+    value = value >> n
+    return value << n
+
+
+def get_n_least_significant_bits(value, n):
+    value = value << MAX_BIT_VALUE - n
+    value = value % MAX_COLOR_VALUE
+    return value >> MAX_BIT_VALUE - n
+
+
+def get_n_most_significant_bits(value, n):
+    return value >> MAX_BIT_VALUE - n
+
+
+def shit_n_bits_to_8(value, n):
+    return value << MAX_BIT_VALUE - n
+
+
+def set_hidden_image(image_original, image_to_hide, nb_bits_for_size):
+    width, height = image_to_hide.size
+    hide_image = image_original.load()
+    hide_in_image = image_to_hide.load()
+    data = []
+    for y in range(height):
+        for x in range(width):
+            try:
+                r_hide, g_hide, b_hide = hide_image[x, y]
+                r_hide = get_n_most_significant_bits(r_hide, nb_bits_for_size)
+                g_hide = get_n_most_significant_bits(g_hide, nb_bits_for_size)
+                b_hide = get_n_most_significant_bits(b_hide, nb_bits_for_size)
+                r_hide_in, g_hide_in, b_hide_in = hide_in_image[x, y]
+                r_hide_in = remove_n_least_significant_bits(r_hide_in, nb_bits_for_size)
+                g_hide_in = remove_n_least_significant_bits(g_hide_in, nb_bits_for_size)
+                b_hide_in = remove_n_least_significant_bits(b_hide_in, nb_bits_for_size)
+
+                data.append((r_hide + r_hide_in,
+                             g_hide + g_hide_in,
+                                b_hide + b_hide_in))
+
+            except Exception as e:
+                print(e)
+
+    return make_image(data, (width, height))
