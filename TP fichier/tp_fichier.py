@@ -57,7 +57,6 @@ def extraire_notes_matiere(nom_fichier_source, nom_fichier_destination, nom_mati
         return
     file_destination.write(matieres[0] + ";" + nom_matiere + "\n")
     for ligne in lignes[1:]:
-        print(ligne)
         notes = ligne.split(";")
         file_destination.write(notes[0] + ";" + notes[index_matiere] + "\n")
     file_source.close()
