@@ -22,7 +22,7 @@ def int_to_bits(i):
 
 def positive_or_negative_4_bytes_int_to_bits(i):
     if i < 0:
-        i = 2 ** 32 + i
+        i = 16 + i
     b = ""
     while i > 0:
         b = str(i % 2) + b

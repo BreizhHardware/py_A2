@@ -1,8 +1,10 @@
 from sys import argv as args
 from tp_nombres_entiers import *
 
+
 def is_equal(a, b):
     return a == b
+
 
 def __main__():
     if len(args) == 2:
@@ -27,23 +29,27 @@ def __main__():
             mask = 0b10010001
             j = i & mask
             print(j)
+            k = 69
+            mask2 = 0b10010001
+            m = k & mask2
+            print(m)
             print("=======================positive_or_negative_4_bytes_int_to_bits=======================")
-            print(positive_or_negative_4_bytes_int_to_bits(0))
-            print(positive_or_negative_4_bytes_int_to_bits(1))
-            print(positive_or_negative_4_bytes_int_to_bits(2))
-            print(positive_or_negative_4_bytes_int_to_bits(3))
-            print(positive_or_negative_4_bytes_int_to_bits(4))
-            print(positive_or_negative_4_bytes_int_to_bits(5))
-            print(positive_or_negative_4_bytes_int_to_bits(6))
-            print(positive_or_negative_4_bytes_int_to_bits(7))
-            print(positive_or_negative_4_bytes_int_to_bits(-1))
-            print(positive_or_negative_4_bytes_int_to_bits(-2))
-            print(positive_or_negative_4_bytes_int_to_bits(-3))
-            print(positive_or_negative_4_bytes_int_to_bits(-4))
-            print(positive_or_negative_4_bytes_int_to_bits(-5))
-            print(positive_or_negative_4_bytes_int_to_bits(-6))
-            print(positive_or_negative_4_bytes_int_to_bits(-7))
-            print(positive_or_negative_4_bytes_int_to_bits(-8))
+            print("0: " + positive_or_negative_4_bytes_int_to_bits(0))
+            print("1: " + positive_or_negative_4_bytes_int_to_bits(1))
+            print("2: " + positive_or_negative_4_bytes_int_to_bits(2))
+            print("3: " + positive_or_negative_4_bytes_int_to_bits(3))
+            print("4: " + positive_or_negative_4_bytes_int_to_bits(4))
+            print("5: " + positive_or_negative_4_bytes_int_to_bits(5))
+            print("6: " + positive_or_negative_4_bytes_int_to_bits(6))
+            print("7: " + positive_or_negative_4_bytes_int_to_bits(7))
+            print("-1: " + positive_or_negative_4_bytes_int_to_bits(-1))
+            print("-2: " + positive_or_negative_4_bytes_int_to_bits(-2))
+            print("-3: " + positive_or_negative_4_bytes_int_to_bits(-3))
+            print("-4: " + positive_or_negative_4_bytes_int_to_bits(-4))
+            print("-5: " + positive_or_negative_4_bytes_int_to_bits(-5))
+            print("-6: " + positive_or_negative_4_bytes_int_to_bits(-6))
+            print("-7: " + positive_or_negative_4_bytes_int_to_bits(-7))
+            print("-8: " + positive_or_negative_4_bytes_int_to_bits(-8))
             print("=======================get_bits=======================")
             print(get_bits('10110', 1))
             print(get_bits('10110', 2))
@@ -55,11 +61,12 @@ def __main__():
             print(add('010101', '100111'))
             print(add('1', '1'))
         else:
-            print("Usage: python main.py <nombre>")
+            print("Usage: python main.py tp_nombres_entiers")
             return
     else:
-        print("Usage: python main.py <nombre>")
+        print("Usage: python main.py tp_nombres_entiers")
         return
+
 
 if __name__ == "__main__":
     __main__()
