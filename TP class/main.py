@@ -2,8 +2,8 @@ from rational import Rational
 def __main__():
     print("--------------------Rational--------------------")
     r1 = Rational()
-    r1.set_numerator(1)
-    r1.set_denominator(2)
+    r1.set_numerator(15)
+    r1.set_denominator(10)
     r2 = Rational()
     r2.set_numerator(1)
     r2.set_denominator(3)
