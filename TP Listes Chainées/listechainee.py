@@ -73,8 +73,15 @@ class ListeChainee:
         self.tete = None
 
     def __add__(self, other):
-        current = self.tete
-        while current.next:
-            current = current.next
-        current.next = other.tete
-        return self
+        current1 = self.tete
+        current2 = other.tete
+        LC = ListeChainee()
+        while current1 or current2:
+            val1 = current1.value if current1 else 0
+            val2 = current2.value if current2 else 0
+            LC.add_last(val1 + val2)
+            if current1:
+                current1 = current1.next
+            if current2:
+                current2 = current2.next
+        return LC

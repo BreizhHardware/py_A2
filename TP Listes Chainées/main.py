@@ -21,9 +21,6 @@ def test_listechainee():
     LC.empty()
     print(LC.isEmpy())
     LC.printLinkedList()
-    LC.add_first(1)
-    LC.add_first(2)
-    LC.add_first(2)
     LC.add_first(35)
     LC.add_last(44)
     LC.printLinkedList()
@@ -34,6 +31,13 @@ def test_listechainee():
     LC2.printLinkedList()
     LC3 = LC + LC2
     LC3.printLinkedList()
+    LC4 = ListeChainee()
+    LC4.add_first(1)
+    LC4.add_first(1)
+    LC4.add_first(1)
+    LC4.add_first(1)
+    LC5 = LC3 + LC4
+    LC5.printLinkedList()
 
 
 if __name__ == "__main__":
