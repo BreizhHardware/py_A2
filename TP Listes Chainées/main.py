@@ -49,9 +49,16 @@ def test_polycreux():
     pc.add(nodeMonome(10, 0))
     pc.add(nodeMonome(44, 100))
 
+    pc3 = polyCreux(nodeMonome(6, 2))
+    pc3.add(nodeMonome(4, 1))
+    pc3.add(nodeMonome(2, 0))
     e = pc.evaluate(1)
     print(e)
-    e = pc.evaluate(35)
+    e = pc.evaluate(-1)
+    print(e)
+    e = pc3.evaluate(1)
+    print(e)
+    e = pc3.evaluate(-1)
     print(e)
 
     pc.afficher()

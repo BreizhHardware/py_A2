@@ -105,19 +105,25 @@ class polyCreux:
         self.tete = monome
 
     def add(self, monome):
+        # Ajout d'un monome dans un polynome creux
         if self.tete is None:
+            # Si le polynome est vide on ajoute le monome en tete
             self.tete = monome
             return
         if self.tete.degre < monome.degre:
+            # Si le degre du monome est superieur a celui du premier monome du polynome on ajoute le monome en tete
             monome.next = self.tete
             self.tete = monome
             return
         current = self.tete
+        # On parcourt le polynome pour trouver la place du monome
         while current:
             if current.degre == monome.degre:
+                # Si le degre du monome est egal a celui du monome courant on ajoute les coefficients
                 current.coef += monome.coef
                 return
             if current.next is None or current.next.degre < monome.degre:
+                # Si le degre du monome est superieur a celui du monome suivant on ajoute le monome
                 monome.next = current.next
                 current.next = monome
                 return
@@ -125,15 +131,20 @@ class polyCreux:
 
     def afficher(self):
         current = self.tete
+        # On parcourt le polynome pour afficher les monomes
         while current:
             if current.next is None:
+                # Si le monome est le dernier on affiche le monome sans le +
                 if current.degre == 0:
+                    # Si le degre du monome est 0 on affiche le coefficient
                     print(f"{current.coef}")
                     current = current.next
                 elif current.degre == 1:
+                    # Si le degre du monome est 1 on affiche le coefficient et X
                     print(f"{current.coef}X")
                     current = current.next
                 else:
+                    # Sinon on affiche le coefficient, X et le degre
                     print(f"{current.coef}X^{current.degre}")
                     current = current.next
             else:
@@ -143,62 +154,79 @@ class polyCreux:
     def evaluate(self, x):
         current = self.tete
         result = 0
+        # On parcourt le polynome pour evaluer le polynome en x
         while current:
+            # On ajoute le resultat du monome courant au resultat
             result += current.coef * (x ** current.degre)
             current = current.next
         return result
 
     def multiply(self, scalar):
+        # On parcourt le polynome pour multiplier les coefficients par un scalaire
         current = self.tete
         while current:
+            # On multiplie le coefficient par le scalaire
             current.coef *= scalar
             current = current.next
 
     def delete_from_degre(self, degre):
+        # Suppression d'un monome de degre donne
         current = self.tete
         if current.degre == degre:
+            # Si le monome a supprimer est en tete on le supprime
             self.tete = current.next
             return
         while current.next:
+            # On parcourt le polynome pour trouver le monome a supprimer
             if current.next.degre == degre:
                 current.next = current.next.next
                 return
             current = current.next
 
     def __add__(self, other):
+        # Addition de deux polynomes creux
         current1 = self.tete
         current2 = other.tete
         LC = polyCreux()
         while current1 or current2:
+            # On parcourt les deux polynomes
             degre1 = current1.degre if current1 else -1
             degre2 = current2.degre if current2 else -1
             if degre1 == degre2:
+                # Si les degres des monomes sont egaux on ajoute les coefficients
                 LC.add(nodeMonome(current1.coef + current2.coef, degre1))
                 current1 = current1.next
                 current2 = current2.next
             elif degre1 > degre2:
+                # Si le degre du monome du premier polynome est superieur on ajoute le monome du premier polynome
                 LC.add(nodeMonome(current1.coef, degre1))
                 current1 = current1.next
             else:
+                # Sinon on ajoute le monome du deuxieme polynome
                 LC.add(nodeMonome(current2.coef, degre2))
                 current2 = current2.next
         return LC
 
     def __sub__(self, other):
+        # Soustraction de deux polynomes creux
         current1 = self.tete
         current2 = other.tete
         LC = polyCreux()
         while current1 or current2:
+            # On parcourt les deux polynomes
             degre1 = current1.degre if current1 else -1
             degre2 = current2.degre if current2 else -1
             if degre1 == degre2:
+                # Si les degres des monomes sont egaux on soustrait les coefficients
                 LC.add(nodeMonome(current1.coef - current2.coef, degre1))
                 current1 = current1.next
                 current2 = current2.next
             elif degre1 > degre2:
+                # Si le degre du monome du premier polynome est superieur on ajoute le monome du premier polynome
                 LC.add(nodeMonome(current1.coef, degre1))
                 current1 = current1.next
             else:
+                # Sinon on ajoute le monome du deuxieme polynome
                 LC.add(nodeMonome(-current2.coef, degre2))
                 current2 = current2.next
         return LC
