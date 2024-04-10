@@ -230,3 +230,6 @@ class polyCreux:
                 LC.add(nodeMonome(-current2.coef, degre2))
                 current2 = current2.next
         return LC
+
+    def __call__(self, x):
+        return self.evaluate(x)
