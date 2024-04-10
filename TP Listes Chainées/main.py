@@ -1,8 +1,9 @@
-from listechainee import ListeChainee
+from listechainee import ListeChainee, polyCreux, nodeMonome
 
 
 def main():
-    test_listechainee()
+    # test_listechainee()
+    test_polycreux()
 
 
 def test_listechainee():
@@ -39,6 +40,36 @@ def test_listechainee():
     LC5 = LC3 + LC4
     LC5.printLinkedList()
 
+def test_polycreux():
+    pc = polyCreux(nodeMonome(6, 125))
+    pc.add(nodeMonome(4, 125))
+    pc.add(nodeMonome(4, 126))
+    pc.add(nodeMonome(7, 3))
+    pc.add(nodeMonome(9, 1))
+    pc.add(nodeMonome(10, 0))
+    pc.add(nodeMonome(44, 100))
+
+    e = pc.evaluate(1)
+    print(e)
+    e = pc.evaluate(35)
+    print(e)
+
+    pc.afficher()
+    pc.multiply(3)
+    pc.afficher()
+    pc.delete_from_degre(125)
+    pc.afficher()
+
+    pc2 = polyCreux()
+    pc2.add(nodeMonome(2, 125))
+    pc2.add(nodeMonome(4, 101))
+    pc2.add(nodeMonome(4, 1))
+    pc2.add(nodeMonome(7, 0))
+    print("affichage PC2")
+    pc2.afficher()
+    pc = pc - pc2
+    print("affichage pc somme")
+    pc.afficher()
 
 if __name__ == "__main__":
     main()
