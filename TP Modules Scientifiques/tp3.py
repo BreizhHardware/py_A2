@@ -41,13 +41,35 @@ def dessiner_cercle(x, y, r):
 
 def cercle_dans_cercle():
     plot.axis("equal")
-    fig, ax = plot.subplots()
-    for i in range(10):
-        cercle = dessiner_cercle(0, 0, i + 1)
-        ax.add_patch(cercle)
+    for i in range(1, 11):
+        dessiner_cercle(0, 0, i / 10)
     plot.show()
 
 
+def carre_de_cercle(longueur, rayon=1):
+    # Dessine un carré de coté coté avec des cercles de rayon coté/2
+    x = np.linspace(rayon, longueur - rayon, int(longueur / (2 * rayon)))
+    y = np.linspace(rayon, longueur - rayon, int(longueur / (2 * rayon)))
+    X, Y = np.meshgrid(x, y)
+    plot.scatter(X, Y, s=np.pi * (2 * rayon) ** 2)
+    plot.gca().set_aspect('equal', adjustable='box')
+    plot.show()
+
+
+def cercle_de_plus_en_plus_petit():
+    plot.axis("equal")
+    x = 0
+    for i in range(5):
+        x -= 2 * i - 1
+        dessiner_cercle(x, 0, i)
+    plot.show()
+
+
+def triangle_avec_cercle():
+    for i in range(10):
+        for j in range(i):
+            dessiner_cercle(j, i, 0.5)
+    plot.show()
 
 
 # Jeu de test
@@ -64,3 +86,6 @@ print(cos_a)  # affiche [ 0.54030231 -0.66939722 -0.9899925 ]
 cercle = dessiner_cercle(0, 0, 1)
 cercle.show()
 cercle_dans_cercle()
+carre_de_cercle(10, 1)
+cercle_de_plus_en_plus_petit()
+triangle_avec_cercle()

@@ -82,5 +82,6 @@ def test_polycreux():
     print(e)
     print(pc(1) + pc(0))
 
+
 if __name__ == "__main__":
     main()
