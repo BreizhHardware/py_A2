@@ -1,6 +1,6 @@
 from Circle1 import Circle1
 from Rectangle1 import Rectangle1
-from turtle import Turtle
+from turtle import Turtle, Screen
 
 
 def drawShapes(shapes, turtle):
@@ -15,4 +15,5 @@ r = Rectangle1(x=0, y=-100, width=50, height=200,
                lineThickness=5, lineColor="blue", fillColor="cyan")
 shapes = [c, r]
 drawShapes(shapes, turtle)
-turtle.exitonclick()
+screen = Screen()
+screen.exitonclick()
