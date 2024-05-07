@@ -51,7 +51,7 @@ def carre():
     turtle.left(90)
 
 
-def pyntagon():
+def pentagon():
     for i in range(5):
         turtle.forward(100)
         turtle.left(72)
@@ -63,7 +63,7 @@ def hexagon():
         turtle.left(60)
 
 
-def octogon():
+def octogone():
     for i in range(8):
         turtle.forward(100)
         turtle.left(45)
@@ -91,11 +91,19 @@ def triangle_filled_rotation():
         time.sleep(0.5)
 
 
+def dessiner_racine_n_ieme(n):
+    for i in range(n):
+        turtle.forward(100)
+        turtle.left(360 / n)
+
+
 # triangle()
 # carre()
-# pyntagon()
+# pentagon()
 # hexagon()
-# octogon()
+# octogone()
 # circle()
 # triangle_filled()
 triangle_filled_rotation()
+# dessiner_racine_n_ieme(5)
+# dessiner_racine_n_ieme(900)
